@@ -1,0 +1,177 @@
+\section{Тензоры}
+
+Повествование в этом разделе основано на главе 7 книги \cite{NT14}, в основном нас будут интересовать геометрический и аналитический взгляды на тензоры.
+
+\subsection{Мотивация определения, тензоры ранга $1$ и $2$}
+
+Пусть $(x^1, \ldots, x^n)$ --- локальные координаты в области $U$ на многообразии. (Можно без потери смысла думать про двумерные поверхности в трёхмерном пространстве, которые подробно обсуждаются в \href{https://github.com/pshenikita/Differential-Geometry}{курсе классической дифференциальной геометрии}.) Любой касательный вектор можно реализовать как вектор скорости кривой на этой поверхности. А именно, рассмотрим кривую, запись которой в локальных координатах имеет вид
+\[
+	\vec{x}(t) = \vec{x}_0 + \vec{\xi}t,
+\]
+где $\vec{x}_0 = (x_0^1, \ldots, x_0^n)$ --- координаты точки, в которой вектор $\vec{\xi}$ касается поверхности. Тогда
+\[
+	\dot{\vec{x}}(0) = \left.\frac{d\vec{x}(t)}{dt}\right|_{t = 0} = \vec{\xi}.
+\]
+
+Вектор скорости имеет физический смысл и поэтому не зависит от системы координат. Однако в разных система координат запись вектора различна. Действительно, введём новые координаты
+\[
+	z^i = z^i(x^1, \ldots, x^n),\quad i = 1, \ldots, n,
+\]
+и зададим кривую $\vec{x}(t)$ в терминах новых координат:
+\[
+	\vec{z}(t) = (z^1(x^1(t), \ldots, x^n(t)), \ldots, z^n(x^1(t), \ldots, x^n(t))).
+\]
+По теореме о дифференцировании сложной функции
+\[
+	\dot{\vec{z}}(0) = \left.\frac{d\vec{z}(\vec{x}(t))}{dt}\right|_{t = 0} = \left.\br{\frac{\partial z^1}{\partial x^j}\frac{dx^j(t)}{dt}, \ldots, \frac{\partial z^n}{\partial x^j}\frac{dx^j(t)}{dt}}\right|_{t = 0}.
+\]
+Таким образом, нами доказана следующая теорема.
+
+\begin{theorem}
+	Векторы скорости $\vec{\xi} = \dot{\vec{x}}(0)$ и $\tilde{\vec{\xi}} = \dot{\vec{z}}(0)$ движущейся точки в различных системах координат $(z^1, \ldots, x^n)$ и $(z^1, \ldots, z^n)$ связаны соотношением
+	\begin{equation} \label{eq:VectorLaw}
+		\tilde{\xi}^i = \frac{\partial z^i}{\partial x^j}\xi^j.
+	\end{equation}
+\end{theorem}
+
+А теперь заметим, что если у нас есть какой-то объект, связанный с локальными координатами на многообразии и изменяющийся при заменах этих локлаьных координат по формулам \eqref{eq:VectorLaw}, то для нас этот объект не отличим от касательного вектора. Поэтому закон преобразования фундаментален в том смысле, что он определяет объект, который меняется по такому закону.
+
+Так что мы можем \underline{назвать} \textit{векторами} величины $(\xi^1, \ldots, \xi^n)$ меняется при замене координат по формулам \eqref{eq:VectorLaw}. \textit{Скалярами} при этом можно называть величины, которые не меняются при заменах координат. Простейшими примерами скаляров могут служит числовые функции $f(x^1, \ldots, x^n)$.
+
+Приведём другие естественные примеры тензоров. Для этого рассмотрим \textit{градиент} функции --- выражение
+\[
+	\grad f = \br{\frac{\partial f}{\partial x^1}, \ldots, \frac{\partial f}{\partial x^n}}.
+\]
+
+\begin{theorem}
+	Значение градиента функции зависит от выбора системы координат. При замене координат величины
+	\[
+		\vec{\xi} = (\xi_1, \ldots, \xi_n) = \br{\frac{\partial f}{\partial x^1}, \ldots, \frac{\partial f}{\partial x^n}},\quad
+		\tilde{\vec{\xi}} = (\tilde{\xi}_1, \ldots, \tilde{\xi}_n) = \br{\frac{\partial f}{\partial z^1}, \ldots, \frac{\partial f}{\partial z^n}}
+	\]
+	связаны соотношением
+	\begin{equation} \label{eq:CovectorLaw}
+		\tilde{\xi}_i = \frac{\partial x^j}{\partial z^i}\xi_j.
+	\end{equation}
+\end{theorem}
+
+\begin{proof}
+	Применить теорему о дифференцировании сложной функции к композиции $f(\vec{x}) = f(\vec{z}(\vec{x}))$:
+	\[
+		\frac{\partial f}{\partial z^i} = \frac{\partial f}{\partial x^j}\frac{\partial x^j}{\partial z^i}.
+	\]
+\end{proof}
+
+Формулы \eqref{eq:VectorLaw} и \eqref{eq:CovectorLaw} различны, и поэтому градиент функции не является вектором. Он является примером другого вида тензоров; величина $(\xi_1, \ldots, \xi_n)$, которая при переходе к другой системе координат преобразуется по формулам \eqref{eq:CovectorLaw}, называется \textit{ковектором}. Однако в курсах геометрии и анализа мы часто воспринимаем градиент функции именно как вектор. Следует разобраться, почему такое восприятие <<законно>>.
+
+Напомним, что матрицей Якоби $J$ замены координат $(x^1, \ldots, x^n) \to (z^1, \ldots, z^n)$ называется матрица
+\[
+	J = (a^i_j) = \br{\frac{\partial z^i}{\partial x^j}}.
+\]
+Транспонированная к ней матрица $J^t$ имеет вид $J^t = (b^i_j)$, где $a^i_j = b^j_i$. Формулы \eqref{eq:VectorLaw} и \eqref{eq:CovectorLaw} принимают вид
+\[
+	\tilde{\vec{\xi}} = J\vec{\xi}\ \text{(вектор скорости)},\quad\vec{\xi} = J^t\tilde{\vec{\xi}}\ \text{(градиент)}.
+\]
+Замены координат обратимы, и поэтому мы можем переписать формулу, полученную для градиентов, в виде
+\[
+	\tilde{\vec{\xi}} = (J^t)^{-1}\vec{\xi}.
+\]
+
+Мы приходим к важному выводу: векторы и ковекторы преобразуются одинаково, если $J = (J^t)^{-1}$, то есть если матрица $J$ ортогональна. Поэтому в случае ортонормированных координат в евклидовом пространстве мы иногда говорим о градиенте как о векторе и не различаем верхние и нижние индексы: в этом случае векторы и ковекторы преобразуются по одним и тем же законам.
+
+\begin{lemma} \label{lemma:InverseCoordinates}
+	Пусть $(z^1, \ldots, z^n) \to (x^1, \ldots, x^n)$ --- замена координат, обратная к замене $(x^1, \ldots, x^n) \to (z^1, \ldots, z^n)$. Тогда
+	\begin{equation} \label{eq:InverseCoordinates}
+		\frac{\partial x^i}{\partial z^j}\frac{\partial z^j}{\partial x^k} = \delta^i_k.
+	\end{equation}
+\end{lemma}
+
+\begin{proof}
+	Применить теорему о дифференцировании сложной функции к тождественному отображению композиции замен координат, указанных в условии леммы.
+\end{proof}
+
+\begin{theorem}
+	Ковекторы являются линейными функциями на векторах: если $\vec{\eta} = (\eta_1, \ldots, \eta_n)$ --- ковектор в точке $\vec{x}$, то на пространстве $\R^n$ векторов в этой точке он задаёт линейную функцию $\eta\colon \R^n \to \R$ по формуле
+	\[
+		\vec{\eta}(\vec{\xi}) = \eta_i\xi^i.
+	\]
+\end{theorem}
+
+\begin{proof}
+	Линейность этой функции очевидна. Остаётся доказать, что она корректно определена, то есть независимость от выбора координат. При переходе к новым координатам $(z^1, \ldots, z^n)$ согласно формулам \eqref{eq:VectorLaw} и \eqref{eq:CovectorLaw} имеем $\ds\tilde{\xi}^i = \frac{\partial z^i}{\partial x^j}\xi^j$, $\ds\tilde{\eta}_i = \frac{\partial x^k}{\partial z^i}\eta_k$, откуда следует, что
+	\[
+		\tilde{\eta}_i\tilde{\xi}^i = \br{\frac{\partial x^k}{\partial z^i}\eta_k}\br{\frac{\partial z^i}{\partial x^j}\xi^j} = \delta_j^k\eta_k\xi^j = \eta_k\xi^k.
+	\]
+\end{proof}
+
+Если ковектор $\vec{\eta} = \grad f$ является градиентом функции $f$, то задаваемая им линейная функция
+\[
+	\vec{\eta}(\vec{\xi}) = \frac{\partial f}{\partial x^i}\xi^i
+\]
+есть производная функции $f$ по направлению вектора $\vec{\xi}$.
+
+В курсе дифференциальной геометрии мы наблюдали ещё один важный пример тензоров --- риманову метрику в криволинейных координатах.
+
+\begin{theorem}
+	При заменах координат $(x^1, \ldots, x^n) \to (z^1, \ldots, z^n)$ риманова метрика $g_{ij}dx^idx^j \hm= \tilde{g}_{kl}dz^kdz^l$ преобразуется по формуле
+	\begin{equation} \label{eq:QuadraticLaw}
+		\tilde{g}_{kl} = g_{ij}\frac{\partial x^i}{\partial z^k}\frac{\partial x^j}{\partial z^l}.
+	\end{equation}
+\end{theorem}
+
+\begin{proof}
+	Риманова метрика каждой паре векторов $\vec{\xi}$ и $\vec{\eta}$, касательных в точке $\vec{x}$, сопоставляет их скалярное произведение
+	\[
+		\langle\vec{\xi}, \vec{\eta}\rangle = g_{ij}(\vec{x})\xi^i\eta^j.
+	\]
+
+	Так как длина кривой $\vec{x}(t)$, $a \leqslant t \leqslant b$, равна $\ds\int_a^b\sqrt{\langle\dot{\vec{x}}, \dot{\vec{x}}\rangle}\,dt$ не зависит о выбора координат, и значение скалярного произведение $\langle\vec{\xi}, \vec{\eta}\rangle$ не зависит от выбора координат. При замене координат мы имеем $\ds\xi^i = \frac{\partial x^i}{\partial x^k}\tilde{\xi}^k$ и $\ds\eta^j = \frac{\partial x^j}{\partial x^l}\tilde{\eta}^l$. Отсюда следует, что
+	\[
+		g_{ij}\xi^i\eta^j = g_{ij}\frac{\partial x^i}{\partial x^k}\tilde{\xi}^k\frac{\partial x^j}{\partial x^l}\tilde{\eta}^l = \br{g_{ij}\frac{\partial x^i}{\partial x^k}\frac{\partial x^j}{\partial x^l}}\tilde{\xi}^k\tilde{\eta}^l = \tilde{g}_{kl}\tilde{\xi}^k\tilde{\eta}^l.
+	\]
+	Так как векторы $\vec{\xi}$ и $\vec{\eta}$ произвольны, из последнего равенства вытекает формула \eqref{eq:QuadraticLaw}.
+\end{proof}
+
+Линейные операторы, действующие на векторах, задаются матрицей из элементов с одним нижним с одним верхним индексом:
+\[
+	\vec{\xi} = \A\vec{\eta},\quad \xi^i = a^i_j\eta^j.
+\]
+При заменах координат $\ds\tilde{\xi}^i = \frac{\partial z^i}{\partial z^k}\xi^k$, $\ds\tilde{\eta}^j = \frac{\partial z^j}{\partial x^l}\eta^l$ равенство $\tilde{\xi}^i = \tilde{a}^i_j\tilde{\eta}^j$ имеет вид
+\[
+	\br{\frac{\partial z^i}{\partial x^k}\xi^k} = \tilde{a}^i_j\br{\frac{\partial z^j}{\partial x^l}\eta^l}.
+\]
+Умножая обе части на $\ds\frac{\partial x^m}{\partial z^i}$ и суммируя по $i$, с учётом леммы \ref{lemma:InverseCoordinates}, получаем
+\[
+	\xi^m = \br{\tilde{a}^i_j\frac{\partial z^j}{\partial x^l}\frac{\partial x^m}{\partial z^i}}\eta^l = a^m_l\eta^l.
+\]
+Отсюда мы получаем следующий результат.
+
+\begin{theorem}
+	При заменах координат элементы матрицы $A = (a^i_j)$ линейного оператора преобразуется по правилу
+	\[
+		\tilde{a}^i_j = \frac{\partial z^i}{\partial x^k}\frac{\partial x^l}{\partial z^j}a^k_l.
+	\]
+\end{theorem}
+
+Можем привести и пример тензора с двумя верхними индексами, которое задаёт кососимметрическое скалярное произведение ковекторов:
+\[
+	\langle\vec{\xi}, \vec{\eta}\rangle = g^{ij}\xi_i\eta_j.
+\]
+
+Здесь $g^{ij} = \{x^i, x^j\}$, где $\{\bs{\cdot}, \bs{\cdot}\}$ --- скобка Пуассона в области (про неё можно почитать в \cite{NT14}, \S 6{.}1{.}9). Согласно определению этой скобки,
+\[
+	\tilde{g}^{ij} = \{z^i, z^j\} = \frac{\partial z^i}{\partial x^k}\frac{\partial z^j}{\partial x^l}\{x^k, x^l\} = \frac{\partial z^i}{\partial x^k}\frac{\partial z^j}{\partial x^l}g^{kl}.
+\]
+
+\subsection{Тензоры произвольного ранга}
+
+Указанные выше правила преобразования тензоров малого ранга при заменах координат приводят нас к общему определению тензора.
+
+\begin{definition}
+	\textit{Тензором} называется объект, задаваемый в каждой системе координат $(x^1, \ldots, x^n)$ набором чисел $T^{i_1, \ldots, i_p}_{j_1, \ldots, j_q}$, которые при замене координат $(x^1, \ldots, x^n) \to (z^1, \ldots, z^n)$, преобразуются по следующему правилу:
+	\[
+		\widetilde{T}^{i_1, \ldots, i_p}_{j_1, \ldots, j_q} = \frac{\partial z^{i_1}}{\partial x^{k_1}}\ldots\frac{\partial z^{i_p}}{\partial x^{k_p}}\frac{\partial x^{l_1}}{\partial z^{j_1}}\ldots\frac{\partial z^{l_q}}{\partial x^{j_q}}T^{k_1, \ldots, k_p}_{l_1, \ldots, l_q},
+	\]
+	где $\widetilde{T}^{i_1, \ldots, i_p}_{j_q, \ldots, j_q}$ --- числовая запись тензора в координатах $(z^1, \ldots, z^n)$. Про тензор $T$ с $p$ верхними и $q$ нижними индексами говорят, что он имеет \textit{тип $(p, q)$} и \textit{ранг $p + q$}.
+\end{definition}
+
